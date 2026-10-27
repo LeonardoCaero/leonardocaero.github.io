@@ -1,0 +1,46 @@
+---
+import "@fontsource-variable/hanken-grotesk";
+import "@fontsource-variable/geist-mono";
+import jp400 from "@fontsource/noto-sans-jp/400.css?url";
+import jp500 from "@fontsource/noto-sans-jp/500.css?url";
+import jp700 from "@fontsource/noto-sans-jp/700.css?url";
+import "../styles/global.css";
+import { locales, href, type Locale, type Page } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  page: Page;
+  title: string;
+}
+
+const { locale, page, title } = Astro.props;
+const t = locales[locale];
+const site = Astro.site!;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="theme-color" content="#0b0b0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(href(locale, page), site)} />
+    {(Object.keys(locales) as Locale[]).map((l) => (
+      <link rel="alternate" hreflang={l} href={new URL(href(l, page), site)} />
+    ))}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:type" content="website" />
+    {locale === "ja" && [jp400, jp500, jp700].map((f) => <link rel="stylesheet" href={f} />)}
+  </head>
+  <body class="font-sans">
+    <div class="p-2 md:p-4 xl:h-dvh xl:min-h-208">
+      <main class="h-full rounded-[40px] border border-white/5 bg-frame p-2 md:p-3">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

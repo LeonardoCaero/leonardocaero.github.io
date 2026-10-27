@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-frame: #0f0f11;
+  --color-card: #131315;
+  --color-card-hover: #19191c;
+  --color-card-2: #19191c;
+  --color-line: #26262a;
+  --color-fg: #e6e6e8;
+  --color-muted: #85858c;
+  --color-rx-blue: #2f5bd3;
+  --color-rx-blue-soft: #7f9cf0;
+  --color-rx-red: #d6372f;
+  --color-rx-yellow: #f2c230;
+
+  --font-sans: "Hanken Grotesk Variable", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --animate-marquee: marquee 28s linear infinite;
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+  html:lang(ja) {
+    --font-sans: "Noto Sans JP", "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+    line-break: strict;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection {
+    background: var(--color-rx-blue);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-rx-blue-soft);
+    outline-offset: 3px;
+  }
+}
+
+@utility card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r, 30px);
+  background: var(--color-card);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.03);
+  transition: background-color 0.3s ease;
+}
+
+@utility blueprint {
+  background-color: var(--color-card-2);
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise {
+      animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--i, 0) * 60ms);
+    }
+  }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
