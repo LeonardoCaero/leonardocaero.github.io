@@ -1,0 +1,29 @@
+---
+import arrowUpRight from "@phosphor-icons/core/regular/arrow-up-right.svg?raw";
+import arrowRight from "@phosphor-icons/core/regular/arrow-right.svg?raw";
+import arrowDown from "@phosphor-icons/core/regular/arrow-down.svg?raw";
+import arrowUp from "@phosphor-icons/core/regular/arrow-up.svg?raw";
+import plus from "@phosphor-icons/core/regular/plus.svg?raw";
+import download from "@phosphor-icons/core/regular/download-simple.svg?raw";
+import envelope from "@phosphor-icons/core/regular/envelope-simple.svg?raw";
+import github from "@phosphor-icons/core/regular/github-logo.svg?raw";
+import linkedin from "@phosphor-icons/core/regular/linkedin-logo.svg?raw";
+import image from "@phosphor-icons/core/regular/image.svg?raw";
+import user from "@phosphor-icons/core/regular/user.svg?raw";
+import cube from "@phosphor-icons/core/regular/cube.svg?raw";
+import stack from "@phosphor-icons/core/regular/stack.svg?raw";
+import copy from "@phosphor-icons/core/regular/copy.svg?raw";
+import cloud from "@phosphor-icons/core/regular/cloud.svg?raw";
+import x from "@phosphor-icons/core/regular/x.svg?raw";
+
+const icons = { arrowUpRight, arrowRight, arrowDown, arrowUp, plus, download, envelope, github, linkedin, image, user, cube, stack, copy, cloud, x };
+
+interface Props {
+  name: keyof typeof icons;
+  class?: string;
+}
+
+const { name, class: cls = "size-4" } = Astro.props;
+---
+
+<span class:list={["inline-block shrink-0 [&>svg]:size-full", cls]} aria-hidden="true" set:html={icons[name]} />

@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  class?: string;
+  i?: number;
+  href?: string;
+  label?: string;
+  bare?: boolean;
+  go?: "sheet" | "down" | "up";
+}
+
+const { class: cls, i = 0, href, label, bare = false, go } = Astro.props;
+const Tag = href ? "a" : "section";
+const section = go === "down" || go === "up";
+const icon = go === "sheet" ? "plus" : go === "down" ? "arrowDown" : go === "up" ? "arrowUp" : "arrowRight";
+const motion = {
+  sheet: "group-hover:rotate-90",
+  down: "group-hover:translate-y-0.5",
+  up: "group-hover:-translate-y-0.5",
+  none: "group-hover:translate-x-0.5",
+}[go ?? "none"];
+---
+
+<Tag
+  href={href}
+  aria-label={label}
+  class:list={["card rise group", bare ? "p-0" : "p-6 md:p-7", href && "hover:bg-card-hover", cls]}
+  style={`--i:${i}`}
+>
+  <slot />
+  {href && (
+    <span
+      aria-hidden="true"
+      class:list={[
+        "absolute right-5 bottom-5 grid place-items-center rounded-full transition duration-300",
+        section
+          ? "size-12 bg-fg text-bg shadow-[0_6px_20px_rgb(0_0_0/0.35)] group-hover:scale-105"
+          : "size-10 bg-white/[0.06] text-muted group-hover:bg-fg group-hover:text-bg group-focus-visible:bg-fg group-focus-visible:text-bg",
+      ]}
+    >
+      <Icon name={icon} class:list={["size-4 transition-transform duration-300", motion]} />
+    </span>
+  )}
+</Tag>

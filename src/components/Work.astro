@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import Tile from "./Tile.astro";
+import Placeholder from "./Placeholder.astro";
+import { locales, timeline, ongoing, href, type Locale, type Page } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  page?: Page;
+  title?: string;
+}
+
+const { locale, page = "", title: pageTitle } = Astro.props;
+const t = locales[locale];
+const eyebrow = "text-[11px] font-medium tracking-[0.22em] text-muted uppercase";
+const title = "text-[1.4rem] leading-snug font-medium tracking-[-0.015em]";
+const body = "text-[0.9rem] leading-relaxed text-muted";
+---
+
+<Base locale={locale} page={page} title={pageTitle ?? t.meta.title}>
+  <div class="grid h-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 lg:grid-cols-12 lg:grid-rows-3">
+    <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-9 lg:flex-row">
+      <Tile i={0} bare class="min-h-80 lg:min-h-0 lg:min-w-0 lg:flex-1"><Placeholder class="absolute inset-0" /></Tile>
+      <Tile i={1} bare class="aspect-square lg:h-full"><Placeholder class="absolute inset-0" /></Tile>
+    </div>
+
+    <Tile i={4} bare class="min-h-64 sm:col-span-2 lg:col-span-5 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+
+    <Tile i={5} bare class="min-h-48 sm:col-span-2 lg:col-span-4 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+
+    <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1">
+      <div class="grid grid-cols-2 gap-2 md:gap-3">
+        <div class="grid grid-cols-2 gap-2 md:gap-3">
+          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
+          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
+          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
+          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
+        </div>
+        <Tile i={3} bare class="aspect-square"><Placeholder class="absolute inset-0" /></Tile>
+      </div>
+      <Tile i={6} bare class="min-h-80 flex-1 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    </div>
+
+    <Tile i={7} bare class="min-h-48 sm:col-span-2 lg:col-span-4 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+
+    <Tile i={8} bare class="min-h-48 sm:col-span-2 lg:col-span-3 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+
+    <Tile i={9} bare class="min-h-56 lg:col-span-2 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+
+    <Tile i={10} bare class="min-h-48 sm:col-span-2 lg:col-span-3 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+  </div>
+</Base>

@@ -1,0 +1,14 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  icon?: "image" | "user" | "cube";
+  class?: string;
+}
+
+const { icon = "image", class: cls } = Astro.props;
+---
+
+<div class:list={["blueprint grid place-items-center", cls]}>
+  <Icon name={icon} class="size-7 text-white/10" />
+</div>
