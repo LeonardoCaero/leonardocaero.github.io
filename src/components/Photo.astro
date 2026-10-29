@@ -1,0 +1,21 @@
+---
+import { existsSync } from "node:fs";
+import Placeholder from "./Placeholder.astro";
+
+interface Props {
+  name: string;
+  alt: string;
+  icon?: "image" | "user" | "cube";
+  eager?: boolean;
+  focus?: string;
+}
+
+const { name, alt, icon, eager, focus } = Astro.props;
+const file = ["jpg", "jpeg", "png", "webp"].map((ext) => `photos/${name}.${ext}`).find((f) => existsSync(`public/${f}`));
+---
+
+{file ? (
+  <img src={`/${file}`} alt={alt} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding={eager ? "sync" : "async"} class="absolute inset-0 size-full object-cover" style={focus && `object-position: ${focus}`} />
+) : (
+  <Placeholder icon={icon} class="absolute inset-0" />
+)}

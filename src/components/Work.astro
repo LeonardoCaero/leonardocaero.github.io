@@ -4,6 +4,7 @@ import Tile from "./Tile.astro";
 import Placeholder from "./Placeholder.astro";
 import Logo from "./Logo.astro";
 import Brand from "./Brand.astro";
+import Photo from "./Photo.astro";
 import { locales, timeline, ongoing, href, type Locale, type Page } from "../i18n";
 
 interface Props {
@@ -31,7 +32,7 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
       </Tile>
 
       <Tile i={1} bare class="aspect-square lg:h-full">
-        <Placeholder class="absolute inset-0" />
+        <Photo name="me" alt="Leonardo Caero Ledezma" icon="user" eager />
       </Tile>
     </div>
 
