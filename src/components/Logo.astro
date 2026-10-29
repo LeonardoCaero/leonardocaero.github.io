@@ -1,0 +1,19 @@
+---
+import raw from "../assets/logo.svg?raw";
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+
+const { class: cls, title = "caero DEV" } = Astro.props;
+
+const svg = raw
+  .slice(raw.indexOf("<svg"))
+  .replace(/<metadata>[\s\S]*?<\/metadata>/, "")
+  .replace(/\s(width|height)="[^"]*"/g, "")
+  .replace('fill="#000000"', 'fill="currentColor"')
+  .replace("<svg", title ? `<svg role="img" aria-label="${title}"` : `<svg aria-hidden="true"`);
+---
+
+<span class:list={["block [&>svg]:h-auto [&>svg]:w-full", cls]} set:html={svg} />

@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import Tile from "./Tile.astro";
 import Placeholder from "./Placeholder.astro";
+import Logo from "./Logo.astro";
+import Brand from "./Brand.astro";
 import { locales, timeline, ongoing, href, type Locale, type Page } from "../i18n";
 
 interface Props {
@@ -20,8 +22,17 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
 <Base locale={locale} page={page} title={pageTitle ?? t.meta.title}>
   <div class="grid h-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 lg:grid-cols-12 lg:grid-rows-3">
     <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-9 lg:flex-row">
-      <Tile i={0} bare class="min-h-80 lg:min-h-0 lg:min-w-0 lg:flex-1"><Placeholder class="absolute inset-0" /></Tile>
-      <Tile i={1} bare class="aspect-square lg:h-full"><Placeholder class="absolute inset-0" /></Tile>
+      <Tile i={0} class="flex min-h-80 flex-col justify-between gap-4 lg:min-h-0 lg:min-w-0 lg:flex-1">
+        <Brand locale={locale} page="" />
+        <div>
+          <h1 class="text-[clamp(2rem,0.6rem+2.2vw,3.4rem)] leading-[1.05] font-medium tracking-[-0.03em]">{t.hero.hi}</h1>
+          <p class="mt-4 max-w-[56ch] text-[1.05rem] leading-relaxed text-muted xl:text-lg">{t.hero.intro}</p>
+        </div>
+      </Tile>
+
+      <Tile i={1} bare class="aspect-square lg:h-full">
+        <Placeholder class="absolute inset-0" />
+      </Tile>
     </div>
 
     <Tile i={4} bare class="min-h-64 sm:col-span-2 lg:col-span-5 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
@@ -36,7 +47,13 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
           <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
           <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
         </div>
-        <Tile i={3} bare class="aspect-square"><Placeholder class="absolute inset-0" /></Tile>
+        <Tile i={3} bare class="grid aspect-square place-items-center">
+          <div class="absolute inset-0 bg-[radial-gradient(120%_120%_at_30%_10%,#4a76ec_0%,#2f5bd3_45%,#1c3a93_100%)]"></div>
+          <Logo class="relative w-1/2 text-white" title="caero DEV" />
+          <span class="absolute bottom-[12%] left-1/2 flex h-1 w-8 -translate-x-1/2 overflow-hidden rounded-full" aria-hidden="true">
+            <span class="flex-1 bg-white"></span><span class="flex-1 bg-rx-red"></span><span class="flex-1 bg-rx-yellow"></span>
+          </span>
+        </Tile>
       </div>
       <Tile i={6} bare class="min-h-80 flex-1 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
     </div>
