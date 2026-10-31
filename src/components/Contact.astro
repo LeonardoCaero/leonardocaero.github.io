@@ -1,0 +1,44 @@
+---
+import Tile from "./Tile.astro";
+import Icon from "./Icon.astro";
+import { locales, links, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  class?: string;
+  i?: number;
+}
+
+const { locale, class: cls, i = 0 } = Astro.props;
+const t = locales[locale];
+---
+
+<Tile i={i} class:list={["flex flex-col justify-between gap-6", cls]}>
+  <h2 class="text-2xl leading-snug tracking-tight text-balance">{t.cta.title}</h2>
+  <a
+    href={`mailto:${links.email}`}
+    data-copy={links.email}
+    data-copied={t.cta.copied}
+    class="group/copy inline-flex items-center justify-center gap-2.5 rounded-2xl border border-white/8 bg-white/5 px-5 py-3.5 text-sm text-fg transition hover:bg-white/10 active:scale-[0.98]"
+  >
+    <span data-label aria-live="polite">{t.cta.copy}</span>
+    <Icon name="copy" class="size-4 text-muted" />
+  </a>
+</Tile>
+
+<script>
+  document.addEventListener("click", async (e) => {
+    const el = (e.target as Element).closest<HTMLAnchorElement>("[data-copy]");
+    if (!el || !navigator.clipboard) return;
+    e.preventDefault();
+    const label = el.querySelector("[data-label]")!;
+    el.dataset.label ??= label.textContent!;
+    try {
+      await navigator.clipboard.writeText(el.dataset.copy!);
+    } catch {
+      return void (location.href = el.href);
+    }
+    label.textContent = el.dataset.copied!;
+    setTimeout(() => (label.textContent = el.dataset.label!), 1800);
+  });
+</script>

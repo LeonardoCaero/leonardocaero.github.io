@@ -1,0 +1,36 @@
+---
+import Icon from "./Icon.astro";
+import { locales, links, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  class?: string;
+  i?: number;
+}
+
+const { locale, class: cls, i = 0 } = Astro.props;
+const t = locales[locale];
+const items = [
+  { href: links.linkedin, icon: "linkedin", label: "LinkedIn", hover: "hover:bg-[#0A66C2] hover:text-white" },
+  { href: links.github, icon: "github", label: "GitHub", hover: "hover:bg-[#ededed] hover:text-[#111]" },
+  { href: `mailto:${links.email}`, icon: "envelope", label: links.email, hover: "hover:bg-rx-blue hover:text-white" },
+  { href: "/cv.pdf", icon: "download", label: t.hero.cv, download: "LeonardoCaero_CV.pdf", hover: "hover:bg-rx-yellow hover:text-[#111]" },
+] as const;
+---
+
+<div class:list={["grid grid-cols-2 gap-2 md:gap-3", cls]}>
+  {items.map((it, n) => (
+    <a
+      href={it.href}
+      target={it.href.startsWith("http") ? "_blank" : undefined}
+      rel={it.href.startsWith("http") ? "noopener" : undefined}
+      download={"download" in it ? it.download : undefined}
+      aria-label={it.label}
+      title={it.label}
+      class:list={["card rise grid aspect-square place-items-center text-muted transition-colors duration-300 [--r:22px]", it.hover]}
+      style={`--i:${i + n}`}
+    >
+      <Icon name={it.icon} class="aspect-square w-[34%]" />
+    </a>
+  ))}
+</div>

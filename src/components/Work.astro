@@ -4,6 +4,8 @@ import Tile from "./Tile.astro";
 import Placeholder from "./Placeholder.astro";
 import Logo from "./Logo.astro";
 import Brand from "./Brand.astro";
+import Socials from "./Socials.astro";
+import Contact from "./Contact.astro";
 import Photo from "./Photo.astro";
 import { locales, timeline, ongoing, href, type Locale, type Page } from "../i18n";
 
@@ -58,12 +60,7 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
 
     <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1">
       <div class="grid grid-cols-2 gap-2 md:gap-3">
-        <div class="grid grid-cols-2 gap-2 md:gap-3">
-          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
-          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
-          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
-          <Tile i={2} bare class="aspect-square [--r:22px]"><Placeholder class="absolute inset-0" /></Tile>
-        </div>
+        <Socials locale={locale} i={2} />
         <Tile i={3} bare class="grid aspect-square place-items-center">
           <div class="absolute inset-0 bg-[radial-gradient(120%_120%_at_30%_10%,#4a76ec_0%,#2f5bd3_45%,#1c3a93_100%)]"></div>
           <Logo class="relative w-1/2 text-white" title="caero DEV" />
@@ -93,6 +90,6 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
 
     <Tile i={9} bare class="min-h-56 lg:col-span-2 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
 
-    <Tile i={10} bare class="min-h-48 sm:col-span-2 lg:col-span-3 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Contact locale={locale} i={10} class="lg:col-span-3" />
   </div>
 </Base>
