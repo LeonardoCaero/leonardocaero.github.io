@@ -36,9 +36,25 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
       </Tile>
     </div>
 
-    <Tile i={4} bare class="min-h-64 sm:col-span-2 lg:col-span-5 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Tile i={4} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-5 lg:min-h-0">
+      <div class="absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_0%,rgb(47_91_211/0.3),transparent_60%)]"></div>
+      <p class:list={["relative", eyebrow]}>{t.featured.label}</p>
+      <div class="relative">
+        <h2 class:list={[title, "font-mono"]}>jacaero-platform</h2>
+        <p class="mt-1">{t.featured.tagline}</p>
+        <p class:list={["mt-3 max-w-[56ch]", body]}>{t.featured.body}</p>
+      </div>
+    </Tile>
 
-    <Tile i={5} bare class="min-h-48 sm:col-span-2 lg:col-span-4 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Tile i={5} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-4 lg:min-h-0">
+      <div class="absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_0%,rgb(242_194_48/0.16),transparent_60%)]"></div>
+      <p class:list={["relative", eyebrow]}>{t.side.label}</p>
+      <div class="relative">
+        <h2 class:list={[title, "font-mono"]}>benchlog</h2>
+        <p class="mt-1">{t.side.tagline}</p>
+        <p class:list={["mt-3 max-w-[48ch]", body]}>{t.side.body}</p>
+      </div>
+    </Tile>
 
     <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1">
       <div class="grid grid-cols-2 gap-2 md:gap-3">
@@ -56,7 +72,19 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
           </span>
         </Tile>
       </div>
-      <Tile i={6} bare class="min-h-80 flex-1 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+      <Tile i={6} class="flex min-h-80 flex-1 flex-col gap-5 lg:min-h-0">
+        <h2 class={eyebrow}>{t.experience}</h2>
+        <ol class="space-y-2 text-[0.85rem]">
+          {timeline.map((e) => (
+            <li class="flex items-baseline justify-between gap-3">
+              <span class:list={[ongoing.has(e.key) ? "text-fg" : "text-muted"]}>{e.org}</span>
+              <span class="font-mono text-[11px] whitespace-nowrap text-muted">
+                {ongoing.has(e.key) ? `${e.period} – ${t.timeline.now}` : e.period}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </Tile>
     </div>
 
     <Tile i={7} bare class="min-h-48 sm:col-span-2 lg:col-span-4 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
