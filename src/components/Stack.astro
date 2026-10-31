@@ -1,0 +1,29 @@
+---
+import * as icons from "simple-icons";
+import Icon from "./Icon.astro";
+import { stack } from "../i18n";
+
+const lines = [stack.filter((_, n) => n % 2 === 0), stack.filter((_, n) => n % 2 === 1)];
+---
+
+<div class="overflow-hidden mask-x-from-85%" role="img" aria-label={stack.map((s) => s.name).join(", ")}>
+  {lines.map((items, row) => (
+    <div class:list={["flex w-max animate-marquee", row === 1 && "mt-2.5 [animation-direction:reverse]"]} aria-hidden="true">
+      {[...items, ...items].map((s) => {
+        const si = s.icon ? (icons as Record<string, { path: string; hex: string }>)[s.icon] : null;
+        return (
+          <span class="pr-2.5">
+            <span class="flex items-center gap-2.5 rounded-2xl bg-white/[0.04] py-2.5 pr-4 pl-3 text-sm whitespace-nowrap text-fg/85">
+              {si ? (
+                <svg viewBox="0 0 24 24" class="size-5" fill={"color" in s ? s.color : `#${si.hex}`}><path d={si.path} /></svg>
+              ) : (
+                <span style={`color:${"color" in s ? s.color : "inherit"}`}><Icon name="cloud" class="size-5" /></span>
+              )}
+              {s.name}
+            </span>
+          </span>
+        );
+      })}
+    </div>
+  ))}
+</div>

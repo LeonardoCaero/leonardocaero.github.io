@@ -2,11 +2,13 @@
 import Base from "../layouts/Base.astro";
 import Tile from "./Tile.astro";
 import Placeholder from "./Placeholder.astro";
+import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import Brand from "./Brand.astro";
 import Socials from "./Socials.astro";
 import Contact from "./Contact.astro";
 import Photo from "./Photo.astro";
+import Stack from "./Stack.astro";
 import { locales, timeline, ongoing, href, type Locale, type Page } from "../i18n";
 
 interface Props {
@@ -84,9 +86,20 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
       </Tile>
     </div>
 
-    <Tile i={7} bare class="min-h-48 sm:col-span-2 lg:col-span-4 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Tile i={7} class="flex flex-col justify-between gap-6 sm:col-span-2 lg:col-span-4">
+      <Icon name="stack" class="size-6 text-rx-blue-soft" />
+      <div>
+        <h2 class={title}>{t.ai.title}</h2>
+        <p class:list={["mt-2 max-w-[48ch]", body]}>{t.ai.body}</p>
+      </div>
+    </Tile>
 
-    <Tile i={8} bare class="min-h-48 sm:col-span-2 lg:col-span-3 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Tile i={8} class="flex flex-col justify-between gap-6 sm:col-span-2 lg:col-span-3">
+      <h2 class={title}>{t.stack.title}</h2>
+      <div class="-mx-6 md:-mx-7">
+        <Stack />
+      </div>
+    </Tile>
 
     <Tile i={9} bare class="min-h-56 lg:col-span-2 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
 
