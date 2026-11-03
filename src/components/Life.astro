@@ -1,0 +1,97 @@
+---
+import Base from "../layouts/Base.astro";
+import Tile from "./Tile.astro";
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import Brand from "./Brand.astro";
+import Socials from "./Socials.astro";
+import Contact from "./Contact.astro";
+import Photo from "./Photo.astro";
+import { locales, links, href, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = locales[locale];
+const l = t.life;
+const scrim = "absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/40 to-transparent p-6 pt-16 md:p-7 md:pt-20";
+---
+
+<Base locale={locale} page="life" title={t.meta.lifeTitle}>
+  <div class="grid h-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 lg:grid-cols-12 lg:grid-rows-3">
+    <Tile i={0} class="flex min-h-80 flex-col justify-between gap-10 sm:col-span-2 lg:col-span-5 lg:min-h-0">
+      <Brand locale={locale} page="life" />
+      <div>
+        <h1 class="text-3xl tracking-tight xl:text-4xl">{l.intro.title}</h1>
+        <p class="mt-3 max-w-[44ch] text-lg leading-relaxed text-muted">{l.intro.body}</p>
+      </div>
+    </Tile>
+
+    <Tile i={1} bare class="min-h-96 sm:col-span-2 lg:col-span-4 lg:row-span-2 lg:min-h-0">
+      <Photo name="japan" alt={l.japan.title} />
+      <div class={scrim}>
+        <h2 class="text-2xl tracking-tight">{l.japan.title} {locale !== "ja" && <span class="text-muted" lang="ja">日本</span>}</h2>
+        <p class="mt-1.5 max-w-[44ch] text-sm leading-relaxed text-fg/70">{l.japan.body}</p>
+      </div>
+    </Tile>
+
+    <Tile i={2} go="up" href={href(locale)} class="flex min-h-48 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-3 lg:min-h-0">
+      <div class="absolute inset-0 bg-[radial-gradient(120%_90%_at_100%_0%,rgb(47_91_211/0.32),transparent_65%)]"></div>
+      <Logo class="relative w-10 text-muted" title="" />
+      <div class="relative pr-14">
+        <h2 class="text-2xl tracking-tight">{t.back}</h2>
+        <p class="mt-1 text-sm text-muted">{t.hero.role}</p>
+      </div>
+    </Tile>
+
+    <Tile i={3} bare class="min-h-96 lg:col-span-3 lg:row-span-2 lg:min-h-0">
+      <Photo name="gundam" alt={l.gundam.title} icon="cube" focus="50% 15%" />
+      <div class={scrim}>
+        <span class="mb-3 flex h-1 w-10 overflow-hidden rounded-full" aria-hidden="true">
+          <span class="flex-1 bg-rx-blue"></span><span class="flex-1 bg-rx-red"></span><span class="flex-1 bg-rx-yellow"></span>
+        </span>
+        <h2 class="text-2xl tracking-tight">{l.gundam.title}</h2>
+        <p class="mt-1.5 text-sm leading-relaxed text-fg/70">{l.gundam.body}</p>
+      </div>
+    </Tile>
+
+    <Tile i={4} bare class="min-h-96 lg:col-span-2 lg:row-span-2 lg:min-h-0">
+      <Photo name="printing" alt={l.printing.title} />
+      <div class={scrim}>
+        <h2 class="text-2xl tracking-tight">{l.printing.title}</h2>
+        <p class="mt-1.5 text-sm leading-relaxed text-fg/70">{l.printing.body}</p>
+      </div>
+    </Tile>
+
+    <Tile i={9} class="flex flex-col justify-between gap-6 sm:col-span-2 lg:col-span-4">
+      <div class="absolute inset-0 bg-[radial-gradient(90%_130%_at_0%_100%,rgb(47_91_211/0.3),transparent_60%)]"></div>
+      <div class="relative">
+        <h2 class="text-2xl tracking-tight">{l.cta.title}</h2>
+        <p class="mt-2 max-w-[44ch] text-sm leading-relaxed text-muted">{l.cta.body}</p>
+      </div>
+      <a
+        href={`mailto:${links.email}?subject=${encodeURIComponent(l.cta.subject)}`}
+        class="relative inline-flex w-fit items-center gap-2 rounded-full bg-rx-blue px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#3a68e6] active:scale-[0.98]"
+      >
+        <Icon name="envelope" />
+        {l.cta.button}
+      </a>
+    </Tile>
+
+    <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-2">
+      <div class="grid grid-cols-2 gap-2 md:gap-3">
+        <Socials locale={locale} i={5} />
+        <Tile i={10} bare class="grid aspect-square place-items-center">
+          <div class="absolute inset-0 bg-[radial-gradient(120%_120%_at_30%_10%,#4a76ec_0%,#2f5bd3_45%,#1c3a93_100%)]"></div>
+          <Logo class="relative w-1/2 text-white" title="caero DEV" />
+          <span class="absolute bottom-[12%] left-1/2 flex h-1 w-8 -translate-x-1/2 overflow-hidden rounded-full" aria-hidden="true">
+            <span class="flex-1 bg-white"></span><span class="flex-1 bg-rx-red"></span><span class="flex-1 bg-rx-yellow"></span>
+          </span>
+        </Tile>
+      </div>
+      <Contact locale={locale} i={7} class="flex-1" />
+    </div>
+  </div>
+</Base>

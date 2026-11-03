@@ -1,7 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 import Tile from "./Tile.astro";
-import Placeholder from "./Placeholder.astro";
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import Brand from "./Brand.astro";
@@ -101,7 +100,16 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
       </div>
     </Tile>
 
-    <Tile i={9} bare class="min-h-56 lg:col-span-2 lg:min-h-0"><Placeholder class="absolute inset-0" /></Tile>
+    <Tile i={9} go="down" href={href(locale, "life")} class="flex min-h-56 flex-col justify-between gap-6 lg:col-span-2 lg:min-h-0">
+      <div class="absolute inset-0 bg-[radial-gradient(120%_90%_at_100%_100%,rgb(214_55_47/0.28),rgb(242_194_48/0.06)_55%,transparent_80%)]"></div>
+      <span class="relative flex h-1 w-10 overflow-hidden rounded-full" aria-hidden="true">
+        <span class="flex-1 bg-rx-blue"></span><span class="flex-1 bg-rx-red"></span><span class="flex-1 bg-rx-yellow"></span>
+      </span>
+      <div class="relative pr-14 lg:pr-0 lg:pb-14">
+        <h2 class="text-xl leading-snug font-medium tracking-[-0.015em]">{t.life.intro.title}</h2>
+        <p class="mt-1 text-xs text-muted" lang="ja">日本・ガンプラ・3D</p>
+      </div>
+    </Tile>
 
     <Contact locale={locale} i={10} class="lg:col-span-3" />
   </div>

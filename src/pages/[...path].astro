@@ -1,5 +1,6 @@
 ---
 import Work from "../components/Work.astro";
+import Life from "../components/Life.astro";
 import { locales, pages, type Locale } from "../i18n";
 
 export const getStaticPaths = () =>
@@ -11,7 +12,7 @@ export const getStaticPaths = () =>
   );
 
 const { locale, page } = Astro.props;
-const views = { "": Work };
+const views = { "": Work, life: Life };
 const View = views[page];
 ---
 

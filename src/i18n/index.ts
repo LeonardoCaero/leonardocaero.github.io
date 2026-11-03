@@ -5,7 +5,7 @@ import ja from "./ja";
 export const locales = { en, es, ja } as const;
 export type Locale = keyof typeof locales;
 
-export const pages = [""] as const;
+export const pages = ["", "life"] as const;
 export type Page = (typeof pages)[number];
 
 export const href = (locale: Locale, page: Page = "") =>
