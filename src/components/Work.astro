@@ -24,7 +24,7 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
 ---
 
 <Base locale={locale} page={page} title={pageTitle ?? t.meta.title}>
-  <div class="grid h-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 lg:grid-cols-12 lg:grid-rows-3">
+  <div data-bento inert={page ? true : undefined} transition:persist={`bento-${locale}`} class="grid h-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 lg:grid-cols-12 lg:grid-rows-3 [&.settled_.rise]:animate-none">
     <div class="flex flex-col gap-2 sm:col-span-2 md:gap-3 lg:col-span-9 lg:flex-row">
       <Tile i={0} class="flex min-h-80 flex-col justify-between gap-4 lg:min-h-0 lg:min-w-0 lg:flex-1">
         <Brand locale={locale} page="" />
@@ -113,4 +113,5 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
 
     <Contact locale={locale} i={10} class="lg:col-span-3" />
   </div>
+  <slot name="overlay" slot="overlay" />
 </Base>
