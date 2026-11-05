@@ -1,0 +1,101 @@
+---
+import Sheet from "../layouts/Sheet.astro";
+import Tile from "./Tile.astro";
+import Icon from "./Icon.astro";
+import Photo from "./Photo.astro";
+import Contact from "./Contact.astro";
+import { locales, projects, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  project: keyof typeof projects;
+}
+
+const { locale, project } = Astro.props;
+const t = locales[locale];
+const c = t.case;
+const p = project === "benchlog" ? t.benchlog : t.case;
+const { name, tools, repo, since } = projects[project];
+const eyebrow = "text-[11px] font-medium tracking-[0.22em] text-muted uppercase";
+const heading = "text-[1.4rem] leading-snug font-medium tracking-[-0.015em]";
+const body = "text-[1.02rem] leading-relaxed text-fg/80";
+const meta = [
+  ["clientLabel" in p ? p.clientLabel : c.client, p.clientValue],
+  [c.role, p.roleValue],
+  [c.period, `${since} – ${t.timeline.now}`],
+  [c.status, p.statusValue],
+];
+---
+
+<Sheet locale={locale} page={`work/${project}`} title={`${name} | Leonardo Caero Ledezma`}>
+  <div class="px-2 pb-8 md:px-3">
+    <h1 class="font-mono text-[2rem] font-medium tracking-[-0.02em] md:text-[2.4rem]">{name}</h1>
+    <p class="mt-1 text-lg text-muted">{p.subtitle}</p>
+  </div>
+
+  <div class="grid gap-2 md:grid-cols-[1fr_1.6fr] md:gap-3">
+    <Tile i={0}>
+      <dl class="space-y-5">
+        {meta.map(([k, v]) => (
+          <div>
+            <dt class={eyebrow}>{k}</dt>
+            <dd class="mt-1.5">{v}</dd>
+          </div>
+        ))}
+        <div>
+          <dt class={eyebrow}>{t.stack.title}</dt>
+          <dd class="mt-2 flex flex-wrap gap-1.5">
+            {tools.map((s) => <span class="rounded-full bg-white/[0.05] px-2.5 py-1 text-xs text-fg/80">{s}</span>)}
+          </dd>
+        </div>
+      </dl>
+    </Tile>
+
+    <Tile i={1} class="flex flex-col justify-between gap-8">
+      <div>
+        <h2 class={eyebrow}>{c.overviewLabel}</h2>
+        <p class:list={["mt-3", body]}>{p.overview}</p>
+        <h2 class:list={["mt-7", eyebrow]}>{c.problemLabel}</h2>
+        <p class:list={["mt-3", body]}>{p.problem}</p>
+      </div>
+      {repo && (
+      <a
+        href={repo}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm transition hover:border-white/25 hover:bg-white/5 active:scale-[0.98]"
+      >
+        <Icon name="github" />
+        {t.featured.link}
+        <Icon name="arrowUpRight" class="size-3.5 text-muted" />
+      </a>
+      )}
+    </Tile>
+
+    <Tile i={2} bare class="aspect-[16/9] md:col-span-2">
+      <Photo name={project} alt={`${name}: ${p.subtitle}`} />
+    </Tile>
+  </div>
+
+  <article class="mx-auto max-w-[68ch] px-2 py-14 md:py-20">
+    <h2 class={heading}>{c.builtLabel}</h2>
+    <ul class="mt-5 space-y-4">
+      {p.built.map((b) => (
+        <li class:list={["flex gap-4", body]}>
+          <span class="mt-[0.7em] h-px w-4 shrink-0 bg-rx-blue-soft" aria-hidden="true"></span>
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+
+    <h2 class:list={["mt-14", heading]}>{c.runsLabel}</h2>
+    <p class:list={["mt-5", body]}>{p.runs}</p>
+  </article>
+
+  <div class="grid gap-2 md:grid-cols-[1.6fr_1fr] md:gap-3">
+    <Tile i={3} bare class="hidden aspect-[16/10] md:block">
+      <Photo name={`${project}-2`} alt={`${name}: ${p.subtitle}`} />
+    </Tile>
+    <Contact locale={locale} i={4} />
+  </div>
+</Sheet>

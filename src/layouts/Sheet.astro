@@ -1,0 +1,78 @@
+---
+import Work from "../components/Work.astro";
+import Icon from "../components/Icon.astro";
+import Logo from "../components/Logo.astro";
+import { locales, href, type Locale, type Page } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  page: Page;
+  title: string;
+}
+
+const { locale, page, title } = Astro.props;
+const t = locales[locale];
+---
+
+<Work locale={locale} page={page} title={title}>
+  <div slot="overlay">
+    <a href={href(locale)} data-dismiss data-scrim tabindex="-1" aria-hidden="true" class="fixed inset-0 z-40 bg-black/70"></a>
+    <div
+      data-sheet
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      class="fixed inset-x-0 top-4 bottom-0 z-40 mx-auto max-w-6xl overflow-y-auto overscroll-contain rounded-t-[36px] border border-b-0 border-white/6 bg-frame [scrollbar-width:none] [&_.rise]:animate-none md:inset-x-4 md:top-8"
+    >
+      <div class="mx-auto max-w-5xl px-3 pb-10 md:px-6">
+        <header class="sticky top-0 z-10 -mx-3 flex items-center justify-between bg-frame/85 px-3 py-4 backdrop-blur-md md:-mx-6 md:px-6 md:py-6">
+          <a href={href(locale)} data-dismiss aria-label={t.nav.home} class="w-fit transition-opacity hover:opacity-80">
+            <Logo class="w-9 text-fg" />
+          </a>
+          <a
+            href={href(locale)}
+            data-close
+            data-dismiss
+            aria-label={t.close}
+            title={t.close}
+            class="grid size-12 place-items-center rounded-full border border-white/10 text-muted transition hover:border-white/25 hover:text-fg active:scale-95"
+          >
+            <Icon name="x" class="size-5" />
+          </a>
+        </header>
+        <slot />
+      </div>
+    </div>
+  </div>
+</Work>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  // back() when opened from the bento, so mobile scroll position is restored
+  let fromBento = false;
+  let closing = false;
+  document.addEventListener("astro:before-swap", (e) => {
+    const from = !!document.querySelector("[data-sheet]");
+    fromBento = !from && !!e.newDocument.querySelector("[data-sheet]");
+  });
+  const close = async (e?: Event) => {
+    const el = document.querySelector<HTMLAnchorElement>("[data-close]");
+    if (!el) return;
+    e?.preventDefault();
+    if (closing) return;
+    closing = true;
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const opts = { duration: 350, easing: "cubic-bezier(0.32, 0.72, 0, 1)", fill: "forwards" } as const;
+      await Promise.all([
+        document.querySelector("[data-sheet]")!.animate({ transform: "translateY(100%)" }, opts).finished,
+        document.querySelector("[data-scrim]")!.animate({ opacity: 0 }, opts).finished,
+      ]);
+    }
+    fromBento ? history.back() : await navigate(el.href);
+    closing = false;
+  };
+  document.addEventListener("keydown", (e) => e.key === "Escape" && close(e));
+  document.addEventListener("click", (e) => (e.target as Element).closest("[data-dismiss]") && close(e), true);
+</script>
+

@@ -39,20 +39,20 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
       </Tile>
     </div>
 
-    <Tile i={4} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-5 lg:min-h-0">
+    <Tile i={4} go="sheet" href={href(locale, "work/jacaero")} label={`jacaero-platform: ${t.featured.tagline}`} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-5 lg:min-h-0">
       <div class="absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_0%,rgb(47_91_211/0.3),transparent_60%)]"></div>
       <p class:list={["relative", eyebrow]}>{t.featured.label}</p>
-      <div class="relative">
+      <div class="relative pr-14">
         <h2 class:list={[title, "font-mono"]}>jacaero-platform</h2>
         <p class="mt-1">{t.featured.tagline}</p>
         <p class:list={["mt-3 max-w-[56ch]", body]}>{t.featured.body}</p>
       </div>
     </Tile>
 
-    <Tile i={5} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-4 lg:min-h-0">
+    <Tile i={5} go="sheet" href={href(locale, "work/benchlog")} label={`benchlog: ${t.side.tagline}`} class="flex min-h-64 flex-col justify-between gap-6 sm:col-span-2 lg:col-span-4 lg:min-h-0">
       <div class="absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_0%,rgb(242_194_48/0.16),transparent_60%)]"></div>
       <p class:list={["relative", eyebrow]}>{t.side.label}</p>
-      <div class="relative">
+      <div class="relative pr-14">
         <h2 class:list={[title, "font-mono"]}>benchlog</h2>
         <p class="mt-1">{t.side.tagline}</p>
         <p class:list={["mt-3 max-w-[48ch]", body]}>{t.side.body}</p>

@@ -82,6 +82,19 @@
   from { opacity: 0; transform: translateY(14px) scale(0.985); }
 }
 
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes sheet-in { from { transform: translateY(100%); } }
+
+:root:has([data-sheet]) { overflow: hidden; }
+
+/* page swaps are instant; motion runs on the live DOM so it looks identical during and after */
+::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-scrim] { animation: fade-in 0.4s ease; }
+  [data-sheet] { animation: sheet-in 0.55s cubic-bezier(0.32, 0.72, 0, 1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee { animation: none; }
 }
