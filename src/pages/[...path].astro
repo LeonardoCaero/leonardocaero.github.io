@@ -1,6 +1,7 @@
 ---
 import Work from "../components/Work.astro";
 import Life from "../components/Life.astro";
+import About from "../components/About.astro";
 import Case from "../components/Case.astro";
 import { locales, pages, projects, type Locale } from "../i18n";
 
@@ -13,7 +14,7 @@ export const getStaticPaths = () =>
   );
 
 const { locale, page } = Astro.props;
-const views = { "": Work, life: Life };
+const views = { "": Work, life: Life, about: About };
 const project = page.startsWith("work/") ? (page.slice(5) as keyof typeof projects) : null;
 const View = views[page as keyof typeof views];
 ---

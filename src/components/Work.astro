@@ -70,7 +70,7 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
           </span>
         </Tile>
       </div>
-      <Tile i={6} class="flex min-h-80 flex-1 flex-col gap-5 lg:min-h-0">
+      <Tile i={6} go="sheet" href={href(locale, "about")} class="flex min-h-80 flex-1 flex-col gap-5 lg:min-h-0">
         <h2 class={eyebrow}>{t.experience}</h2>
         <ol class="space-y-2 text-[0.85rem]">
           {timeline.map((e) => (
@@ -82,6 +82,7 @@ const body = "text-[0.9rem] leading-relaxed text-muted";
             </li>
           ))}
         </ol>
+        <p class="mt-auto text-[0.9rem] text-muted transition-colors group-hover:text-fg">{t.about.more}</p>
       </Tile>
     </div>
 

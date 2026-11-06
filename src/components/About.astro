@@ -1,0 +1,88 @@
+---
+import Sheet from "../layouts/Sheet.astro";
+import Tile from "./Tile.astro";
+import Stack from "./Stack.astro";
+import Contact from "./Contact.astro";
+import Photo from "./Photo.astro";
+import { locales, timeline, ongoing, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = locales[locale];
+const a = t.about;
+const eyebrow = "text-[11px] font-medium tracking-[0.22em] text-muted uppercase";
+const title = "text-[1.4rem] leading-snug font-medium tracking-[-0.015em]";
+const body = "text-[0.95rem] leading-relaxed text-muted";
+---
+
+<Sheet locale={locale} page="about" title={t.meta.aboutTitle}>
+  <div class="grid gap-2 md:grid-cols-2 md:gap-3">
+    <Tile i={0} class="md:row-span-2">
+      <h1 class="border-b border-white/8 pb-6 text-[2rem] font-medium tracking-[-0.025em]">{a.title}</h1>
+      <h2 class:list={["mt-7", eyebrow]}>{a.storyLabel}</h2>
+      <p class="mt-3 text-[1.05rem] leading-relaxed text-fg/85">{a.story}</p>
+      <h2 class:list={["mt-8", eyebrow]}>{a.nowLabel}</h2>
+      <p class="mt-3 text-[1.05rem] leading-relaxed text-fg/85">{a.now}</p>
+    </Tile>
+
+    <Tile i={1}>
+      <h2 class={eyebrow}>{a.doLabel}</h2>
+      <ul class="mt-5 space-y-5">
+        {a.do.map((d) => (
+          <li>
+            <h3 class="text-[1.05rem] font-medium">{d.title}</h3>
+            <p class:list={["mt-1", body]}>{d.body}</p>
+          </li>
+        ))}
+      </ul>
+    </Tile>
+
+    <Tile i={2} class="flex flex-col justify-between gap-6">
+      <h2 class={title}>{t.stack.title}</h2>
+      <div class="-mx-6 md:-mx-7">
+        <Stack />
+      </div>
+    </Tile>
+
+    <Tile i={3} class="md:row-span-2">
+      <h2 class={eyebrow}>{t.experience}</h2>
+      <ol class="mt-5 space-y-4">
+        {timeline.map((e) => (
+          <li class="flex items-baseline gap-3">
+            <span class="min-w-0">
+              <span class:list={["font-medium", !ongoing.has(e.key) && "text-fg/85"]}>{e.org}</span>
+              <span class="block text-[0.9rem] text-muted sm:ml-2 sm:inline">{t.timeline.roles[e.key]}</span>
+            </span>
+            <span class="h-px min-w-6 flex-1 translate-y-[-0.3em] bg-white/8" aria-hidden="true"></span>
+            <span class="shrink-0 font-mono text-xs text-muted">
+              {ongoing.has(e.key) ? `${e.period} – ${t.timeline.now}` : e.period}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </Tile>
+
+    <Tile i={4}>
+      <h2 class={eyebrow}>{a.educationLabel}</h2>
+      <ol class="mt-5 space-y-4">
+        {a.education.map((e) => (
+          <li class="flex items-baseline gap-3">
+            <span class="min-w-0 text-fg/85">{e.title}</span>
+            <span class="h-px min-w-6 flex-1 translate-y-[-0.3em] bg-white/8" aria-hidden="true"></span>
+            <span class="shrink-0 font-mono text-xs text-muted">{e.period}</span>
+          </li>
+        ))}
+      </ol>
+    </Tile>
+
+    <div class="grid grid-cols-2 gap-2 md:gap-3">
+      <Tile i={5} bare class="aspect-square">
+        <Photo name="about" alt="Leonardo Caero Ledezma" />
+      </Tile>
+      <Contact locale={locale} i={6} />
+    </div>
+  </div>
+</Sheet>
