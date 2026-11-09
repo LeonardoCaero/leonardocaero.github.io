@@ -71,5 +71,71 @@ const site = Astro.site!;
         setTimeout(() => bento?.classList.add("settled"), 1500);
       });
     </script>
+    <script>
+      import { navigate } from "astro:transitions/client";
+
+      type Dir = "left" | "down" | "up";
+      const band = (t: Element, grid: Element, axis: "x" | "y", n: number) => {
+        const g = grid.getBoundingClientRect();
+        const r = t.getBoundingClientRect();
+        const f = axis === "y" ? (r.top - g.top) / g.height : (r.left - g.left) / g.width;
+        return Math.min(n - 1, Math.max(0, Math.floor(f * n)));
+      };
+      const isLife = (path: string) => /\/life\/?$/.test(path);
+      let ghost: HTMLElement | null = null;
+      let dir: Dir = "left";
+
+      document.addEventListener("click", (e) => {
+        const a = (e.target as Element).closest<HTMLAnchorElement>("main a[href]");
+        if (!a || ghost || a.origin !== location.origin || a.pathname === location.pathname || a.hasAttribute("download")) return;
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (a.hasAttribute("hreflang")) dir = "left";
+        else if (isLife(a.pathname) && !isLife(location.pathname)) dir = "down";
+        else if (isLife(location.pathname) && !isLife(a.pathname)) dir = "up";
+        else return;
+        e.preventDefault();
+        e.stopPropagation();
+        const main = document.querySelector("main")!;
+        const grid = main.firstElementChild as HTMLElement;
+        const m = main.getBoundingClientRect();
+        const g = grid.getBoundingClientRect();
+        ghost = grid.cloneNode(true) as HTMLElement;
+        Object.assign(ghost.style, { position: "absolute", left: `${g.left - m.left - main.clientLeft}px`, top: `${g.top - m.top - main.clientTop}px`, width: `${g.width}px`, height: `${g.height}px`, pointerEvents: "none" });
+        ghost.removeAttribute("data-bento");
+        ghost.removeAttribute("data-astro-transition-persist");
+        ghost.inert = true;
+        ghost.querySelectorAll("img").forEach((i) => ((i.loading = "eager"), (i.decoding = "sync")));
+        navigate(a.href);
+      }, true);
+
+      document.addEventListener("astro:after-swap", () => {
+        if (!ghost) return;
+        const main = document.querySelector("main")!;
+        const grid = main.firstElementChild as HTMLElement;
+        const old = ghost;
+        ghost = null;
+        main.classList.add("relative", "overflow-hidden");
+        main.append(old);
+        const vertical = dir !== "left";
+        const dist = vertical ? Math.min(main.clientHeight, innerHeight) : main.clientWidth;
+        const sign = dir === "up" ? 1 : -1;
+        const move = (d: number) => (vertical ? `translateY(${d}px)` : `translateX(${d}px)`);
+        const step = (t: Element, from: Element) =>
+          vertical ? (dir === "up" ? 3 - band(t, from, "x", 4) : band(t, from, "x", 4)) : band(t, from, "y", 3);
+        const opts = (t: Element, from: Element) => ({ duration: 750, delay: step(t, from) * (vertical ? 70 : 90), easing: "cubic-bezier(0.65, 0, 0.35, 1)" });
+        const outs = [...old.querySelectorAll(".rise")].map((t) => {
+          t.getAnimations().forEach((a) => a.cancel());
+          return t.animate([{ transform: "none" }, { transform: move(sign * dist) }], { ...opts(t, old), fill: "forwards" }).finished;
+        });
+        grid.querySelectorAll<HTMLElement>(".rise").forEach((t) => {
+          t.getAnimations().forEach((a) => a.cancel());
+          t.animate([{ transform: move(-sign * dist) }, { transform: "none" }], { ...opts(t, grid), fill: "backwards" });
+        });
+        Promise.all(outs).then(() => {
+          old.remove();
+          main.classList.remove("relative", "overflow-hidden");
+        });
+      });
+    </script>
   </body>
 </html>
