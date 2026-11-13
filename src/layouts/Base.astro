@@ -86,6 +86,7 @@ const site = Astro.site!;
       const isLife = (path: string) => /\/life\/?$/.test(path);
       let ghost: HTMLElement | null = null;
       let dir: Dir = "left";
+      let running: Animation[] = [];
 
       document.addEventListener("click", (e) => {
         const a = (e.target as Element).closest<HTMLAnchorElement>("main a[href]");
@@ -125,19 +126,23 @@ const site = Astro.site!;
         const step = (t: Element, from: Element) =>
           vertical ? (dir === "up" ? 3 - band(t, from, "x", 4) : band(t, from, "x", 4)) : band(t, from, "y", 3);
         const opts = (t: Element, from: Element) => ({ duration: 750, delay: step(t, from) * (vertical ? 70 : 90), easing: "cubic-bezier(0.65, 0, 0.35, 1)" });
-        const outs = [...old.querySelectorAll(".rise")].map((t) => {
-          t.getAnimations().forEach((a) => a.cancel());
-          return t.animate([{ transform: "none" }, { transform: move(sign * dist) }], { ...opts(t, old), fill: "forwards" }).finished;
-        });
-        grid.querySelectorAll<HTMLElement>(".rise").forEach((t) => {
-          t.getAnimations().forEach((a) => a.cancel());
-          t.animate([{ transform: move(-sign * dist) }, { transform: "none" }], { ...opts(t, grid), fill: "backwards" });
-        });
-        Promise.all(outs).then(() => {
+        // inline animation:none, not cancel(): a cancelled css animation replays if the bento is moved into a sheet page
+        const slide = (t: HTMLElement, from: Element, frames: Keyframe[], fill: FillMode) => {
+          t.style.animation = "none";
+          return t.animate(frames, { ...opts(t, from), fill });
+        };
+        running = [
+          ...[...old.querySelectorAll<HTMLElement>(".rise")].map((t) => slide(t, old, [{ transform: "none" }, { transform: move(sign * dist) }], "forwards")),
+          ...[...grid.querySelectorAll<HTMLElement>(".rise")].map((t) => slide(t, grid, [{ transform: move(-sign * dist) }, { transform: "none" }], "backwards")),
+        ];
+        Promise.all(running.map((a) => a.finished)).catch(() => {}).then(() => {
+          running = [];
           old.remove();
           main.classList.remove("relative", "overflow-hidden");
         });
       });
+
+      document.addEventListener("astro:before-preparation", () => running.forEach((a) => a.finish()));
     </script>
   </body>
 </html>
